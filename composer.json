@@ -34,7 +34,9 @@
         "fuzion/omnipay-paybox": "dev-master",
         "sergej-koscejev/omnipay-gopay": "dev-master",
         "omnipay/mollie": "~3.0",
-        "civicrm/omnipay-paypalstandard": "dev-master"
+        "civicrm/omnipay-paypalstandard": "dev-master",
+        "pointybeard/omnipay-nabtransact": "dev-transact",
+        "fzaninotto/faker": "^1.6@dev"
     },
     "require-dev":
     {
