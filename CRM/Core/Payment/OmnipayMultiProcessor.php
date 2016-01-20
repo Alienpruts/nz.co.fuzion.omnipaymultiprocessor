@@ -152,6 +152,10 @@ class CRM_Core_Payment_OmnipayMultiProcessor extends CRM_Core_Payment_PaymentExt
         return $params;
       }
       elseif ($response->isRedirect()) {
+        // Store transactionReference for future use, only for Mollie response.
+        if ($this->_processorName === 'omnipay_Mollie') {
+          $_SESSION['omnipay_trans_ref'] = $response->getData()['id'];
+        }
         CRM_Core_Session::storeSessionObjects();
         if ($response->isTransparentRedirect() || !empty($this->gateway->transparentRedirect)) {
           $this->storeTransparentRedirectFormData($params['qfKey'], $response->getRedirectData() + array(
@@ -821,6 +825,10 @@ class CRM_Core_Payment_OmnipayMultiProcessor extends CRM_Core_Payment_PaymentExt
     $userMessage = $response->getMessage();
     if (method_exists($response, 'getInvalidFields') && ($invalidFields = $response->getInvalidFields()) != array()) {
       $userMessage = ts('Invalid data entered in fields ' . implode(', ', $invalidFields));
+    }
+
+    if (!$userMessage && $this->gateway->getName() === 'Mollie' ) {
+      $userMessage = ts("We're sorry, your payment for this event has failed. You will receive a mail with further instructions.");
     }
 
     $this->handleError('error', $this->transaction_id  . ' ' . $response->getMessage(), 'processor_error', 9002, $userMessage);

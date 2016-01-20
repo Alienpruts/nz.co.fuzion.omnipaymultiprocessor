@@ -142,7 +142,7 @@ return array(
       'payment_type' => 1,
     ),
   ),
-  /*
+
   5 =>
     array(
       'name' => 'OmniPay - Mollie',
